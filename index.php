@@ -5,5 +5,5 @@ require_once 'autoload.php';
 $bc = new SqlBackup(__DIR__);
 //call method
 if($bc->create()){
-    echo 'Backup berhasil';
+    echo 'Backup success';
 }
