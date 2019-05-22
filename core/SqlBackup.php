@@ -1,13 +1,24 @@
 <?php
 //author :aditya ayatusy
 class SqlBackup extends Database{
+    public $dir;
+
+    public function __contruct($dir = ''){
+        if($dir != ''){
+            $this->dir = $dir;
+        }else{
+            $this->dir = __DIR__;
+        }
+    }
+
     public function getTable(){
         $result = $this->query('SHOW TABLES');
         while($row = $result->fetch_assoc()){
-        $rows[] = $row['Tables_in_'.DBTABLE];
+        $rows[] = $row['Tables_in_'.$this->db];
         }
         return $rows;
     }
+
     public function getCreate($table){
         foreach ($table as $t) {
         $result = $this->query('SHOW CREATE TABLE '.$t);
@@ -16,6 +27,7 @@ class SqlBackup extends Database{
         }
         return $rows;
     }
+
     public function getData($table){
         foreach ($table as $t) {
         $describe = []; $rows = []; $se = []; $rowq = [];
@@ -51,6 +63,7 @@ class SqlBackup extends Database{
         return $query;
 
     }
+
     public function create(){
         $sql = '';
         $getTable = $this->getTable();
@@ -63,7 +76,7 @@ class SqlBackup extends Database{
         foreach ($getData as $gd) {
             $sql .= $gd."\n\n";
         }
-        $myfile = fopen(__DIR__."/db-".Date('d-m-Y').".sql", "w") or die("Unable to open file!");
+        $myfile = fopen($this->dir."db-".Date('d-m-Y').".sql", "w") or die("Unable to open file!");
         fwrite($myfile, $sql);
         fclose($myfile);
 

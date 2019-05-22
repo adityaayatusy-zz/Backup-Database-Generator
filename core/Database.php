@@ -3,7 +3,7 @@ class Database{
   protected $server ='localhost';
   protected $user = 'root';
   protected $password = '';
-  protected $db = 'db';
+  protected $db = 'scdb';
   protected $conn;
 
   public function __construct(){
